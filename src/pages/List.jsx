@@ -1,40 +1,38 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import ListDetail from "./ListDetail";
 
 export default function List() {
   const navigate = useNavigate();
 
-  const [seoul, setSeoul] = useState([]);
+  const params = useParams();
 
+  // 해당 페이지 Id 값
+  const region = params.region;
+  const type = params.type;
+
+  const [data, setData] = useState([]);
+
+  // 데이터 받아오기
   useEffect(() => {
-    axios.get('http://localhost:4000/test/data')
+    axios.get(`http://localhost:4000/list/${region}/${type}`)
       .then((response) => {
-        setSeoul(response.data)
+        setData(response.data)
       })
-  }, [])
+  }, [region, type])
 
   return (
     <>
-      <div className='container d-flex flex-wrap'>
-        {
-          seoul.map((a, i) => {
-            return (
-              <div className="card col-2" key={i} onClick={() => {
-                navigate(`/detail/${a.contentid}`);
-              }}>
-                <img src={a.firstimage1} alt="" className="card-img-top" style={ {height : '100px'}}/>
-                <div className="card-body">
-                  <h5 className="card-title">{a.title}</h5>
-                  <p className="card-text">{a.addr1}</p>
-                  <span>좋아요{a.like}</span> 
-                  <span>별점{a.star}</span>
-                </div>
-              </div>
-            )
-          })
-        }
+      <div className="d-flex justify-content-evenly">
+        <h2 onClick={() => {navigate(`/list/${region}/sightseeing`)}}>관광</h2>
+        <h2 onClick={() => {navigate(`/list/${region}/culture`)}}>문화</h2>
+        <h2 onClick={() => {navigate(`/list/${region}/lodgment`)}}>숙박</h2>
+        <h2 onClick={() => {navigate(`/list/${region}/shopping`)}}>쇼핑</h2>
+        <h2 onClick={() => {navigate(`/list/${region}/food`)}}>음식</h2>
       </div>
+      <ListDetail props={data} region={region} />
     </>
   )
 }
