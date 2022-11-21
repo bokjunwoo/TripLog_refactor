@@ -14,7 +14,7 @@ function App() {
         <Route path='/submain/:region' element={<SubMain />} />
         <Route path='/login' element={<Login />} />
         <Route path='/list/:region/:type' element={<List />}/>
-        <Route path="/detail/:region/:contentId" element={<Detail />} />
+        <Route path="/detail/:region/:contentid" element={<Detail />} />
       </Routes>
     </>
   );
