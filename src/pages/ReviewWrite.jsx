@@ -17,8 +17,11 @@ export default function ReviewWrite() {
   const params = useParams();
   const contentid = params.contentid;
 
-  // 로그인 닉네임
+  // 로그인 유저 닉네임
   const nickName = useSelector((state) => state.users.userNickName);
+
+  // 로그인 유저 이미지
+  const userImage = useSelector((state) => state.users.userImage)
 
   // 이미지 업로드 관련 useState
   const [upload, setUpload] = useState(false);
@@ -50,6 +53,7 @@ export default function ReviewWrite() {
         .then((data) => {
           axios.post('http://localhost:4000/review/write', [{
             nickName,
+            userImage,
             contentid,
             contentData,
             starData,
@@ -73,6 +77,7 @@ export default function ReviewWrite() {
         .post('http://localhost:4000/review/write', [
           {
             nickName,
+            userImage,
             contentid,
             contentData,
             starData,

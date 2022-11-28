@@ -7,6 +7,14 @@ const DivBorder = styled.div`
   border: 1px solid black;
   border-radius: 10px;
 `
+const UserImage = styled.img`
+  width: 30px;
+  height: 30px;
+  border: 2px solid black;
+  border-radius: 50%;
+  margin: 0 8px 8px 0;
+`
+
 export default function Review({ props }) {
 
   /* pagingnation */
@@ -17,6 +25,10 @@ export default function Review({ props }) {
   // 페이지 이동 이벤트함수
   const handlePageChange = (page) => {
     setPage(page);
+  };
+
+  const handlerUserImage = (e) => {
+    e.target.src = process.env.PUBLIC_URL + '/userNoImage.png';
   };
 
   return (
@@ -31,7 +43,12 @@ export default function Review({ props }) {
         .map((a, i) => {
           return (
             <DivBorder className="p-2 mb-2" key={i}>
-              <h5 className="card-title">닉네임 : {a.nickName}</h5>
+              <div className="d-flex">
+                {
+                  a.image !== '' ? <UserImage src={`http://localhost:4000/uploads/${a.UserImage}`} alt="" /> : <UserImage onError={handlerUserImage} src=''/>
+                }
+                <h5 className="card-title">닉네임 : {a.nickName}</h5>
+              </div>
               <h6 className="card-subtitle mb-2 text-muted">별점 : {a.star}</h6>
               <p className="card-text">내용 : {a.content}</p>
               {
