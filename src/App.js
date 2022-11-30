@@ -5,11 +5,13 @@ import Login from './pages/Login';
 import Detail from './pages/Detail';
 import Main from './pages/Main';
 import SubMain from './pages/SubMain';
+import Data from './component/Data'
 
 function App() {
   return (
     <>
       <Routes>
+        <Route path='/api' element={<Data />} />
         <Route path='/' element={<Main />} />
         <Route path='/submain/:region' element={<SubMain />} />
         <Route path='/login' element={<Login />} />
