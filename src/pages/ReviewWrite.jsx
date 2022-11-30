@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react';
-import { useSelector } from "react-redux";
 import { useParams } from 'react-router';
-import axios from "axios"
-import styled from "styled-components"
+import { useDispatch, useSelector } from 'react-redux';
+import { reviewUpdate } from '../store/modules/detail';
+import axios from "axios";
+import styled from "styled-components";
 
 const DivBorder = styled.div`
   border: 1px solid black;
@@ -12,7 +13,10 @@ const DivBorder = styled.div`
 // 이미지 사용을 위한 FormData()
 const formData = new FormData();
 
-export default function ReviewWrite() {
+export default function ReviewWrite({title, region}) {
+  // 디스패치
+  const dispatch = useDispatch();
+
   // contentId 받아오는 useParams
   const params = useParams();
   const contentid = params.contentid;
@@ -33,11 +37,11 @@ export default function ReviewWrite() {
   };
 
   /* 데이터 */
-  // 별점 데이터
+  // 별점
   const star = useRef();
-  // 내용 데이터
+  // 내용
   const content = useRef();
-  // 이미지 데이터
+  // 이미지
   const image = useRef();
 
   // 리뷰 저장 클릭 이벤트
@@ -55,11 +59,14 @@ export default function ReviewWrite() {
             nickName,
             userImage,
             contentid,
+            region,
+            title,
             contentData,
             starData,
             image: data,
           }])
             .then(() => {
+              dispatch(reviewUpdate());
               star.current.value = '';
               content.current.value = '';
               image.current.value = '';
@@ -79,12 +86,15 @@ export default function ReviewWrite() {
             nickName,
             userImage,
             contentid,
+            region,
+            title,
             contentData,
             starData,
             image: '',
           },
         ])
         .then(() => {
+          dispatch(reviewUpdate());
           star.current.value = '';
           content.current.value = '';
           image.current.value = '';

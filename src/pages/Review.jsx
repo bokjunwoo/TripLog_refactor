@@ -1,4 +1,7 @@
+import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { reviewUpdate } from "../store/modules/detail";
 import Pagination from 'react-js-pagination';
 import styled from "styled-components";
 import '../style/Paging.css';
@@ -16,6 +19,8 @@ const UserImage = styled.img`
 `
 
 export default function Review({ props }) {
+  // 디스패치
+  const dispatch = useDispatch();
 
   /* pagingnation */
   // 첫 번째 페이지
@@ -27,6 +32,7 @@ export default function Review({ props }) {
     setPage(page);
   };
 
+  // 유저 이미지 핸들러
   const handlerUserImage = (e) => {
     e.target.src = process.env.PUBLIC_URL + '/userNoImage.png';
   };
@@ -54,6 +60,14 @@ export default function Review({ props }) {
               {
                 a.image ? <img src={`http://localhost:4000/uploads/${a.image}`} alt='이미지' style={{ width: '100px', height: '100px' }} /> : null
               }
+              <button type="button" onClick={() => {
+                axios.delete(`http://localhost:4000/review/delete/${a._id}`)
+                  .then(() => { 
+                    dispatch(reviewUpdate())
+                    alert('해당 리뷰가 삭제되었습니다') 
+                  })
+                  .catch(() => { new Error('통신에러') })
+              }}>삭제</button>
             </DivBorder>
           )
         })
