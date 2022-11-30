@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { reviewUpdate } from "../store/modules/detail";
+import { reviewUpdate } from "../store/modules/review";
 import Pagination from 'react-js-pagination';
 import styled from "styled-components";
 import '../style/Paging.css';

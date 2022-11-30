@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { reviewUpdate } from '../store/modules/detail';
+import { reviewUpdate } from '../store/modules/review';
 import axios from "axios";
 import styled from "styled-components";
 
