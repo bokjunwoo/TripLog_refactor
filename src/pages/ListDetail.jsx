@@ -38,8 +38,8 @@ export default function ListDetail({ props, region }) {
                     <div className="card-body">
                       <h5 className="card-title">{a.title}</h5>
                       <p className="card-text">{a.addr1}</p>
-                      <p>좋아요 {a.like}</p>
-                      <p>별점 {starAvg}</p>
+                      <p>❤️ {a.like}</p>
+                      <p>⭐️ {starAvg === 'NaN' ? 0 : starAvg}</p>
                       <p>조회수 {a.view}</p>
                     </div>
                   </div>
