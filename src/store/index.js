@@ -3,7 +3,8 @@ import { persistReducer } from "redux-persist";
 import storageSession from 'redux-persist/lib/storage/session';
 
 import users from './modules/users';
-import detail from './modules/detail';
+import review from './modules/review';
+import like from './modules/like';
 
 const persistConfig = {
   key: "user",
@@ -12,7 +13,7 @@ const persistConfig = {
 };
 
 export const rootReducer = combineReducers({
-  users, detail
+  users, review, like
 });
 
 export default persistReducer(persistConfig, rootReducer);
