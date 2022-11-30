@@ -8,9 +8,13 @@ import ReviewWrite from "./ReviewWrite";
 import KakaoShare from "../component/KakaoShare";
 
 export default function Detail() {
-  const nickName = useSelector((state) => state.users.userNickName);
-
   const params = useParams();
+
+  // 리덕스 detail store 에서 리뷰 업데이트 현황 받아오기
+  const updateReview = useSelector((state) => state.detail.reviewUpdate);
+
+  // 로그인 유저 닉네임
+  const nickName = useSelector((state) => state.users.userNickName);
   
   // 해당 페이지 Id 값
   const contentid = params.contentid;
@@ -29,9 +33,6 @@ export default function Detail() {
 
   // 좋아요
   const [like, setLike] = useState('');
-
-  // 별점
-  const [star, setStar] = useState('');
 
   // 전체 데이터를 가져오는 useEffect
   useEffect(() => {
@@ -57,16 +58,7 @@ export default function Detail() {
       setLike(response.data.like)
     })
     .catch(() => new Error('실패'))
-  }, [contentid, setLike])
-
-  // 별점의 평균을 가져오는 useEffect
-  useEffect(() => {
-    axios.get(`http://localhost:4000/detail/${contentid}`)
-    .then((response) => {
-      setStar(response.data.star)
-    })
-    .catch(() => new Error('실패'))
-  }, [contentid, setStar])
+  }, [contentid])
 
   // 리뷰 정보 가져오는 useEffect
   useEffect(() => {
@@ -75,8 +67,17 @@ export default function Detail() {
       setReview(response.data)
     })
     .catch(() => new Error('실패'))
-  }, [contentid, review])
+  }, [contentid, updateReview])
 
+  /* 별점 평균 계산 */
+  const INITIALVALUE = 0
+  const starList = [];
+  for (let key in review) {
+    starList.push(parseInt(review[key].star));
+  }
+  const starSum = starList.reduce((accumulator, currentValue) => accumulator + currentValue, INITIALVALUE)
+  const starAvg = (starSum / starList.length).toFixed(1);
+  
   return (
     <div className="container col-8">
       <h2>{nickName}님 로그인</h2>
@@ -84,8 +85,8 @@ export default function Detail() {
         <img src={detail.firstimage1} className="card-img-top" alt=""/>
         
         <div className="card-body d-flex justify-content-evenly">
-          <p>⭐️{like}</p>
-          <p>❤️{star}</p>
+          <p>⭐️{starAvg === 'NaN' ? 0 : starAvg}</p>
+          <p>❤️{like}</p>
           <p>조회수 : {detail.view}</p>
           <KakaoShare props={detail}/>
         </div>
@@ -97,15 +98,15 @@ export default function Detail() {
         </div>
         
         <div className="card-body">
-          <KakaoMapDetail props={detail} dd={'dd'}/>
+          <KakaoMapDetail props={detail}/>
         </div>
 
         <div className="card-body">
-          <ReviewWrite />
+          <ReviewWrite title={detail.title} region={region}/>
         </div>
 
         <div className="card-body">
-          <Review props={review}/>
+          <Review props={review} />
         </div>
       </div>
     </div>

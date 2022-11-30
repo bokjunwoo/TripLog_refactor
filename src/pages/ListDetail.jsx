@@ -4,7 +4,6 @@ import Pagination from 'react-js-pagination';
 
 export default function ListDetail({ props, region }) {
   const navigate = useNavigate();
-
   /* pagingnation */
   // 첫 번째 페이지
   const [page, setPage] = useState(1);
@@ -14,7 +13,6 @@ export default function ListDetail({ props, region }) {
   const handlePageChange = (page) => {
     setPage(page);
   };
-
 
   return (
     <>
@@ -27,6 +25,11 @@ export default function ListDetail({ props, region }) {
                 pagePost * (page - 1) + pagePost
               )
               .map((a, i) => {
+                /* 별점 평균 계산 */
+                const INITIALVALUE = 0
+                const starSum = a.star.reduce((accumulator, currentValue) => accumulator + currentValue, INITIALVALUE)
+                const starAvg = (starSum / a.star.length).toFixed(1);
+                
                 return (
                   <div className="card col-2" key={i} onClick={() => {
                     navigate(`/detail/${region}/${a.contentid}`);
@@ -35,8 +38,9 @@ export default function ListDetail({ props, region }) {
                     <div className="card-body">
                       <h5 className="card-title">{a.title}</h5>
                       <p className="card-text">{a.addr1}</p>
-                      <span>좋아요{a.like}</span>
-                      <span>별점{a.star}</span>
+                      <p>좋아요 {a.like}</p>
+                      <p>별점 {starAvg}</p>
+                      <p>조회수 {a.view}</p>
                     </div>
                   </div>
                 )
