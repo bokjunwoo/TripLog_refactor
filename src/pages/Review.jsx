@@ -18,7 +18,7 @@ const UserImage = styled.img`
   margin: 0 8px 8px 0;
 `
 
-export default function Review({ props }) {
+export default function Review({ props, region}) {
   // 디스패치
   const dispatch = useDispatch();
 
@@ -61,7 +61,11 @@ export default function Review({ props }) {
                 a.image ? <img src={`http://localhost:4000/uploads/${a.image}`} alt='이미지' style={{ width: '100px', height: '100px' }} /> : null
               }
               <button type="button" onClick={() => {
-                axios.delete(`http://localhost:4000/review/delete/${a._id}`)
+                const _id = a._id;
+                const contentid = a.contentid
+                const writeTime = a.writeTime;
+                const star = a.star;
+                axios.delete('http://localhost:4000/review/delete', { data : [{ region, _id, contentid, writeTime, star }]})
                   .then(() => { 
                     dispatch(reviewUpdate())
                     alert('해당 리뷰가 삭제되었습니다') 
