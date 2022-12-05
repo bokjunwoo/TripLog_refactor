@@ -27,7 +27,11 @@ export default function ListDetail({ props, region }) {
               .map((a, i) => {
                 /* 별점 평균 계산 */
                 const INITIALVALUE = 0
-                const starSum = a.star.reduce((accumulator, currentValue) => accumulator + currentValue, INITIALVALUE)
+                const starList = [];
+                for (let key in a.star) {
+                  starList.push(parseInt(a.star[key].star));
+                }
+                const starSum = starList.reduce((accumulator, currentValue) => accumulator + currentValue, INITIALVALUE)
                 const starAvg = (starSum / a.star.length).toFixed(1);
                 
                 return (
@@ -38,6 +42,7 @@ export default function ListDetail({ props, region }) {
                     <div className="card-body">
                       <h5 className="card-title">{a.title}</h5>
                       <p className="card-text">{a.addr1}</p>
+                      {console.log(a.star)}
                       <p>❤️ {a.like}</p>
                       <p>⭐️ {starAvg === 'NaN' ? 0 : starAvg}</p>
                       <p>조회수 {a.view}</p>
