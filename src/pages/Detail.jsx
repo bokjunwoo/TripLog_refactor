@@ -142,7 +142,7 @@ export default function Detail() {
         </div>
 
         <div className="card-body">
-          <Review props={review} />
+          <Review props={review} region={region}/>
         </div>
       </div>
     </div>
